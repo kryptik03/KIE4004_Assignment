@@ -1,8 +1,9 @@
 import pandapower as pp
 import pandapower.networks as nw
 import pandapower.shortcircuit as sc
+from pandapower.converter.matpower import from_mpc
 
-sys_id = 33
+sys_id = 69
 fault_bus_idx = 10
 
 print(f"\n=== PANDAPOWER VALIDATION (IEEE {sys_id}-Bus) ===")
@@ -12,7 +13,7 @@ print(f"Fault Location: Bus {fault_bus_idx}")
 if sys_id == 33:
     net = nw.case33bw()
 elif sys_id == 69:
-    net = nw.case69()
+    net = from_mpc('case69.m', f_hz=50) # Zhang et al. usually assume 50Hz or generic
 else:
     raise ValueError("Only 33 or 69 bus systems supported.")
 
@@ -81,10 +82,3 @@ ikss_2ph_pu = ikss_2ph / I_base_kA
 print(f"\n[Scenario 2] Line-to-Line (LL)")
 print(f"  > IEC 60909 Ik'' (RMS): {ikss_2ph:.4f} kA")
 print(f"  > Converted to p.u.   : {ikss_2ph_pu:.4f} p.u.")
-
-try:
-    net = nw.case33bw()
-    pp.to_excel(net, "test_net.xlsx")
-    print("Success!")
-except Exception as e:
-    print(f"Error: {e}")
