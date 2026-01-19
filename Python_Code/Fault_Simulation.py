@@ -3,6 +3,7 @@ import pandapower.networks as nw
 import pandapower.shortcircuit as sc
 from pandapower.converter.matpower import from_mpc
 
+# CHOOSE EITHER 33 OR 69
 sys_id = 69
 fault_bus_idx = 10
 

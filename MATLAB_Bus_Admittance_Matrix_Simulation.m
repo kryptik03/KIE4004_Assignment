@@ -5,6 +5,9 @@
 % =========================================================================
 clear; clc;
 
+%%%%%% CHOOSE BUS: 69 or 33
+bus=69;
+
 % =========================================================================
 % 1. USER CONFIGURATION & SOURCE PARAMETERS
 % =========================================================================
@@ -26,7 +29,12 @@ Z_f       = 0;     % Fault Impedance (Bolted)
 % 2. SOURCE IMPEDANCE CALCULATION
 % =========================================================================
 % Note: Ensure get_case69.m is in your directory
-data = get_case69();
+if bus == 33
+    data = get_case33bw();
+elseif bus == 69
+    data = get_case69();
+end
+      
 baseMVA = data.baseMVA; 
 baseKV = data.baseKV;
 
@@ -52,7 +60,7 @@ fprintf('-----------------------------------\n');
 % 3. BUILD LINE SEQUENCE NETWORKS (Y-Bus)
 % =========================================================================
 branch = data.branch; 
-nb = 69; 
+nb = bus; 
 Y1 = zeros(nb, nb); Y2 = zeros(nb, nb); Y0 = zeros(nb, nb); 
 
 for k = 1:size(branch, 1)
