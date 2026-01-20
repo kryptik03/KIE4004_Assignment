@@ -63,6 +63,7 @@ ikss_1ph = net.res_bus_sc.at[pp_bus_idx, 'ikss_ka']
 # Base Current I_base   = S_base / (sqrt(3) * V_base)
 base_mva = net.sn_mva  # Usually 10 or 100 MVA
 base_kv = net.bus.at[pp_bus_idx, 'vn_kv'] # Nominal voltage at that bus
+
 I_base_kA = base_mva / (1.732 * base_kv)
 
 ikss_1ph_pu = ikss_1ph / I_base_kA
