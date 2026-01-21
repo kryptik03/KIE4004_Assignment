@@ -75,11 +75,14 @@ for k = 1:size(branch, 1)
     Y2(f,t)=-y2; Y2(t,f)=-y2; Y2(f,f)=Y2(f,f)+y2; Y2(t,t)=Y2(t,t)+y2;
     Y0(f,t)=-y0; Y0(t,f)=-y0; Y0(f,f)=Y0(f,f)+y0; Y0(t,t)=Y0(t,t)+y0;
 end
+Y1(1,1)=Y1(1,1)+1/Z1_source;
+Y2(1,1)=Y2(1,1)+1/Z2_source;
+Y0(1,1)=Y0(1,1)+1/Z0_source;
 
 % =========================================================================
 % 4. BUILD Z-BUS (NETWORK IMPEDANCE)
 % =========================================================================
-get_Zbus_slack = @(Y) [0, zeros(1, nb-1); zeros(nb-1, 1), inv(Y(2:end, 2:end))];
+get_Zbus_slack = @(Y) inv(Y);
 Zbus1_net = get_Zbus_slack(Y1);
 Zbus2_net = get_Zbus_slack(Y2);
 Zbus0_net = get_Zbus_slack(Y0);
@@ -87,9 +90,9 @@ Zbus0_net = get_Zbus_slack(Y0);
 % =========================================================================
 % 5. FAULT CALCULATION LOGIC
 % =========================================================================
-Z1_th = Zbus1_net(fault_bus, fault_bus) + Z1_source;
-Z2_th = Zbus2_net(fault_bus, fault_bus) + Z2_source;
-Z0_th = Zbus0_net(fault_bus, fault_bus) + Z0_source;
+Z1_th = Zbus1_net(fault_bus, fault_bus);
+Z2_th = Zbus2_net(fault_bus, fault_bus);
+Z0_th = Zbus0_net(fault_bus, fault_bus);
 
 Ibase = (baseMVA * 1e6) / (sqrt(3) * baseKV * 1e3); 
 Vbase = baseKV / sqrt(3); % Phase-to-neutral base voltage in kV
